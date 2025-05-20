@@ -1,117 +1,143 @@
 'use client';
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
+export default function Episodes({ params }) {
+  const { name } = params;
 
-export default  function Episodes({ params }) {
-    const { name } = use(params);
-    const [selectedSeason, setSelectedSeason] = useState(1);
-    const [episodes, setEpisodes] = useState([]);
-    const [seasons, setSeasons] = useState([]);
-
-    useEffect(()=>{
-        async function fetchData(){
-            const res= await fetch(`https://api.tvmaze.com/search/shows?q=${name}`); 
-            const data = await res.json();
-            const showId = data[0]?.show.id;  //dohvaćaju se sve serije koje imaju isto u imenu pa koristimo samo prvu od njih
-
-            const seasonsRes= await fetch(`https://api.tvmaze.com/shows/${showId}/seasons`);
-            const seasonsData =await seasonsRes.json();
-            setSeasons(seasonsData)
-        }   
-
-    fetchData();
-  }, [])
+  const [seasons, setSeasons] = useState([]);
+  const [selectedSeasonId, setSelectedSeasonId] = useState(null);
+  const [episodes, setEpisodes] = useState([]);
+  const [selectedEpisode, setSelectedEpisode] = useState(null);
 
 
+  useEffect(() => {
+    async function fetchSeasons() {
+      const res = await fetch(`https://api.tvmaze.com/search/shows?q=${name}`);
+      const data = await res.json();
+      const showId = data[0]?.show.id;
 
-    useEffect(()=>{
-        async function fetchData(){
-            const res= await fetch(`https://api.tvmaze.com/seasons/${selectedSeason}/episodes`);
-            const data = await res.json();
-            setEpisodes(data);
-        }
+      const seasonsRes = await fetch(`https://api.tvmaze.com/shows/${showId}/seasons`);
+      const seasonsData = await seasonsRes.json();
 
-        fetchData();
-    }, [selectedSeason]);
+      setSeasons(seasonsData);
+      if (seasonsData.length > 0) {
+        setSelectedSeasonId(seasonsData[0].id);
+      }
+    }
 
+    fetchSeasons();
+  }, [name]);
+
+  useEffect(() => {
+    if (!selectedSeasonId) return;
+
+    async function fetchEpisodes() {
+      const res = await fetch(`https://api.tvmaze.com/seasons/${selectedSeasonId}/episodes`);
+      const episodesData = await res.json();
+      setEpisodes(episodesData);
+    }
+
+    fetchEpisodes();
+  }, [selectedSeasonId]);
 
   return (
-    <div className="w-[80%] flex">
-        <div className="w-[85%]"> 
-            <select value={selectedSeason} onChange={(e)=>setSelectedSeason(e.target.value)}>
-                {seasons.map((season)=>(
-                    <option key={season.id} value={season.id}>
-                        Sezona {season.number}
-                    </option>
-                ))}
+    <div className="w-[80%] mx-auto mt-10 p-4">
+      <h1 className="text-3xl font-bold mb-6 text-center">Epizode serije: {name}</h1>
+
+      <div className="flex gap-4">
+        {/* Lijeva strana – Epizode */}
+        <div className="w-[85%] bg-white rounded-2xl p-4 shadow-md">
+          <div className="mb-6">
+            <select
+              value={selectedSeasonId || ""}
+              onChange={(e) => setSelectedSeasonId(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2 w-48"
+            >
+              {seasons.map((season) => (
+                <option key={season.id} value={season.id}>
+                  Sezona {season.number}
+                </option>
+              ))}
             </select>
-        </div>
-        <div>
-            {episodes.map((ep)=>(
-                <div>
-                    <h2>{ep.number} {ep.name}</h2>
-                    
-                </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {episodes.map((ep) => (
+             <div
+  key={ep.id}
+  onClick={() => setSelectedEpisode(ep)}
+  className="cursor-pointer bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition"
+>
+  <h2 className="text-lg font-semibold mb-1">
+    {ep.number}. {ep.name}
+  </h2>
+  <p className="text-sm text-gray-600">Datum: {ep.airdate}</p>
+  {ep.image?.medium && (
+    <img src={ep.image.medium} alt={ep.name} className="mt-2 rounded" />
+  )}
+  {ep.summary && (
+    <p className="text-sm mt-2 text-gray-700 line-clamp-3" dangerouslySetInnerHTML={{ __html: ep.summary }} />
+  )}
+</div>
+
             ))}
+          </div>
+
+          {episodes.length === 0 && (
+            <p className="text-center text-gray-500 mt-8">Nema dostupnih epizoda.</p>
+          )}
         </div>
-        
 
+        {/* Desna strana – Izbornik */}
+        <div className="w-[15%] bg-gray-100 p-4 rounded-2xl shadow-md h-fit">
+          <h2 className="text-xl font-semibold mb-4">Izbornik</h2>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/" className="text-blue-600 hover:underline">← Početna</Link>
+            </li>
+            <li>
+              <Link href={`/show/${name}`} className="text-blue-600 hover:underline">Detalji serije</Link>
+            </li>
+            <li>
+              <Link href={`/show/${name}/episodes`} className="text-blue-600 hover:underline">Epizode</Link>
+            </li>
+            <li>
+              <Link href={`/show/${name}/cast`} className="text-blue-600 hover:underline">Glumci</Link>
+            </li>
+            <li>
+              <button className="text-blue-600 hover:underline">★ Favorit</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {selectedEpisode && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-xl w-[90%] max-w-xl shadow-lg relative">
+      <button
+        className="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl"
+        onClick={() => setSelectedEpisode(null)}
+      >
+        ×
+      </button>
+      <h2 className="text-2xl font-bold mb-2">
+        {selectedEpisode.number}. {selectedEpisode.name}
+      </h2>
+      <p className="text-sm text-gray-600 mb-2">Datum: {selectedEpisode.airdate}</p>
+      {selectedEpisode.image?.original && (
+        <img src={selectedEpisode.image.original} alt={selectedEpisode.name} className="mb-4 rounded" />
+      )}
+      {selectedEpisode.summary && (
+        <div
+          className="text-gray-700 text-sm"
+          dangerouslySetInnerHTML={{ __html: selectedEpisode.summary }}
+        />
+      )}
     </div>
-    // <div className="w-[80%] mx-auto mt-10 p-4">
-
-
-    //   <div className="flex gap-4">
-    //     {/* Lijeva strana – Epizode */}
-    //     <div className="w-[85%] bg-white rounded-2xl p-4 shadow-md">
-    //     
-
-    //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    //         {episodes.map((ep) => (
-    //           <div key={ep.id} className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition">
-    //             <p className="text-sm text-gray-600">Datum: {ep.airdate}</p>
-    //             {ep.image?.medium && (
-    //               <img
-    //                 src={ep.image.medium}
-    //                 alt={ep.name}
-    //                 className="mt-2 rounded"
-    //               />
-    //             )}
-    //             {ep.summary && (
-    //               <p
-    //                 className="text-sm mt-2 text-gray-700"
-    //                 dangerouslySetInnerHTML={{ __html: ep.summary }}
-    //               />
-    //             )}
-    //           </div>
-    //         ))}
-    //       </div>
-
-    //       {episodes.length === 0 && (
-    //         <p className="text-center text-gray-500 mt-8">Nema dostupnih epizoda.</p>
-    //       )}
-    //     </div>
-
-
-    //     <div className="w-[15%] bg-gray-100 p-4 rounded-2xl shadow-md h-fit">
-    //       <h2 className="text-xl font-semibold mb-4">Izbornik</h2>
-    //       <ul className="space-y-2 text-sm">
-    //         <li>
-    //           <Link href="/" className="text-blue-600 hover:underline">← Početna</Link>
-    //         </li>
-    //         {/* <li>
-    //           <Link href={`/show/${name}`} className="text-blue-600 hover:underline">Detalji serije</Link>
-    //         </li> */}
-    //         <li>
-    //           <Link href={`/show/${name}/cast`} className="text-blue-600 hover:underline">Glumci</Link>
-    //         </li>
-    //         <li>
-    //           <button className="text-blue-600 hover:underline">★ Favorit</button>
-    //         </li>
-    //       </ul>
-    //     </div>
-    //   </div>
-    // </div>
+  </div>
+)}
+    </div>
+    
   );
 }
