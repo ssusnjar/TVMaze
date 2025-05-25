@@ -8,6 +8,8 @@ U TODO dijelu je ostalo dodatno podijeliti komponente i layout, urediti header i
 Link na Vercel je u nastavku, ali deploy nije uspješan jer klikom na detalje o seriji javlja grešku na strani servera koju nisam uspjela riješiti.
 https://tv-maze-iiqu.vercel.app/
 
+Link na video: https://www.dropbox.com/scl/fi/is2k9vwww1hpwpa3ggoau/Create-Next-App-Google-Chrome-2025-05-25-22-55-59.mp4?rlkey=18ad1yebuzbandj0only581xx&st=ipjpb9ux&dl=0
+
 ## Getting Started
 
 First, run the development server:
