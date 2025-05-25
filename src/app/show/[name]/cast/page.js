@@ -83,10 +83,10 @@ export default function Cast({ params }) {
           <nav className='space-y-2 mb-4'>
             <ul className="space-y-4">
               <li>
-              <a href="/" className="text-blue-500 hover:underline"> Početna</a>
+              <Link href="/" className="text-blue-500 hover:underline"> Početna</Link>
               </li>
               <li>
-              <a href={`/show/favorites`} className="text-blue-500 hover:underline">Favoriti</a>
+              <Link href={`/show/favorites`} className="text-blue-500 hover:underline">Favoriti</Link>
               </li>
             </ul>
           </nav>

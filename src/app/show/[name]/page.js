@@ -1,5 +1,6 @@
 import FavoriteButton from "@/app/components/FavoriteButton";
 import NotFound from "./not-found";
+import Link from "next/link";
 
 export default async function ShowDetails({params}) {
     const { name } = await params;
@@ -65,16 +66,16 @@ export default async function ShowDetails({params}) {
             <nav className='space-y-2 mb-4'>
                 <ul className="space-y-4">
                     <li>
-                    <a href="/" className="text-blue-500 hover:underline"> Natrag</a>
+                    <Link href="/" className="text-blue-500 hover:underline"> Natrag</Link>
                     </li>
                     <li>
-                    <a href={`/show/${name}/episodes`} className="text-blue-500 hover:underline"> Epizode</a>
+                    <Link href={`/show/${name}/episodes`} className="text-blue-500 hover:underline"> Epizode</Link>
                     </li>
                     <li>
-                    <a href={`/show/${name}/cast`} className="text-blue-500 hover:underline">Glumci</a>
+                    <Link href={`/show/${name}/cast`} className="text-blue-500 hover:underline">Glumci</Link>
                     </li>
                     <li>
-                    <a href={`/show/favorites`} className="text-blue-500 hover:underline">Favoriti</a>
+                    <Link href={`/show/favorites`} className="text-blue-500 hover:underline">Favoriti</Link>
                     </li>
                 </ul>
             </nav>
