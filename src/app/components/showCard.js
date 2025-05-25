@@ -13,6 +13,7 @@ export default function ShowCard({show}) {
         <div className="p-4">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">{show.name}</h2>
             <p className="text-sm text-gray-600 mb-1">
+                {/* //TODO odvojit zanrove zarezom */}
             <span className="font-medium text-gray-700">Genres:</span> {show.genres}
             </p>
             <p className="text-sm text-gray-600 mb-1">

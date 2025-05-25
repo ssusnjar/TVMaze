@@ -1,5 +1,8 @@
 'use client';
 
+//pozivanje async unutar useEffecta rijeseno sa https://stackoverflow.com/questions/53332321/react-hook-warnings-for-async-function-in-useeffect-useeffect-function-must-ret
+//TODO triba razdvojit na komponente
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -45,10 +48,8 @@ export default function Episodes({ params }) {
   return (
     <div className="w-[80%] mx-auto mt-10 p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Epizode serije: {name}</h1>
-
       <div className="flex gap-4">
-        {/* Lijeva strana – Epizode */}
-        <div className="w-[85%] bg-white rounded-2xl p-4 shadow-md">
+        <div className="w-[85%] bg-white rounded-2xl p-4 ">
           <div className="mb-6">
             <select
               value={selectedSeasonId || ""}
@@ -66,21 +67,21 @@ export default function Episodes({ params }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {episodes.map((ep) => (
              <div
-  key={ep.id}
-  onClick={() => setSelectedEpisode(ep)}
-  className="cursor-pointer bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition"
->
-  <h2 className="text-lg font-semibold mb-1">
-    {ep.number}. {ep.name}
-  </h2>
-  <p className="text-sm text-gray-600">Datum: {ep.airdate}</p>
-  {ep.image?.medium && (
-    <img src={ep.image.medium} alt={ep.name} className="mt-2 rounded" />
-  )}
-  {ep.summary && (
-    <p className="text-sm mt-2 text-gray-700 line-clamp-3" dangerouslySetInnerHTML={{ __html: ep.summary }} />
-  )}
-</div>
+                key={ep.id}
+                onClick={() => setSelectedEpisode(ep)}
+                className="cursor-pointer  p-4 rounded-lg shadow-sm hover:shadow-md transition"
+                >
+                <h2 className="text-lg font-semibold mb-1">
+                    {ep.number}. {ep.name}
+                </h2>
+                <p className="text-sm text-gray-600">Datum: {ep.airdate}</p>
+                {ep.image?.medium && (
+                    <img src={ep.image.medium} alt={ep.name} className="mt-2 rounded" />
+                )}
+                {ep.summary && (
+                    <p className="text-sm mt-2 text-gray-700 line-clamp-3" dangerouslySetInnerHTML={{ __html: ep.summary }} />
+                )}
+                </div>
 
             ))}
           </div>
@@ -90,24 +91,17 @@ export default function Episodes({ params }) {
           )}
         </div>
 
-        {/* Desna strana – Izbornik */}
-        <div className="w-[15%] bg-gray-100 p-4 rounded-2xl shadow-md h-fit">
-          <h2 className="text-xl font-semibold mb-4">Izbornik</h2>
+        <div className='w-60 bg-white shadow-lg p-4'>
+            <h2 className='text-xl font-bold mb-4'>Izbornik</h2>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/" className="text-blue-600 hover:underline">← Početna</Link>
-            </li>
-            <li>
-              <Link href={`/show/${name}`} className="text-blue-600 hover:underline">Detalji serije</Link>
-            </li>
-            <li>
-              <Link href={`/show/${name}/episodes`} className="text-blue-600 hover:underline">Epizode</Link>
+              <Link href="/" className="text-blue-600 hover:underline"> Početna</Link>
             </li>
             <li>
               <Link href={`/show/${name}/cast`} className="text-blue-600 hover:underline">Glumci</Link>
             </li>
             <li>
-              <button className="text-blue-600 hover:underline">★ Favorit</button>
+              <button className="text-blue-600 hover:underline">Favoriti</button>
             </li>
           </ul>
         </div>

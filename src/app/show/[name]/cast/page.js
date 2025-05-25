@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+//stranica kao za prikaz glumaca kao i epizode
+
 export default function Cast({ params }) {
   const [cast, setCast] = useState([]);
   const [selectedActor, setSelectedActor] = useState(null);
@@ -23,10 +25,8 @@ export default function Cast({ params }) {
 
   return (
     <div className="w-[80%] mx-auto flex">
-      {/* Lijevi sadržaj */}
       <div className="w-[85%] p-4">
-        <h1 className="text-2xl font-bold mb-4">Glumci za: {params.name}</h1>
-        
+        <h1 className="text-3xl font-bold mb-6 text-center">Glumci serije: {params.name}</h1>
         <div className="flex flex-wrap gap-4">
           {cast.map((item) => (
             <div
@@ -46,22 +46,8 @@ export default function Cast({ params }) {
         </div>
       </div>
 
-      {/* Desni izbornik */}
-      <div className="w-[15%] p-4 border-l border-gray-300 flex flex-col gap-4">
-        <Link href="/" className="text-blue-600 hover:underline">
-          ← Početna
-        </Link>
-        <Link href={`/show/${params.name}/episodes`} className="text-blue-600 hover:underline">
-          📺 Epizode
-        </Link>
-        <Link href={`/show/${params.name}/cast`} className="text-blue-600 hover:underline">
-          🎭 Glumci
-        </Link>
-        {/* Dodatne opcije */}
-        <button className="text-left text-blue-600 hover:underline">⭐ Favoriti</button>
-      </div>
+ 
 
-      {/* Modal */}
       {selectedActor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-xl w-[90%] max-w-xl shadow-lg relative">
