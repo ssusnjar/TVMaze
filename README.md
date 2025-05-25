@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+TVMaze je projekt u kojem se prikazuje lista serija, prikazuju detalji o njima, popis svih epizoda po sezonama, popis glumaca i detaljnije o njima.
+U TODO dijelu je ostalo dodatno podijeliti komponente i layout, urediti header ili na naslovnoj neki description o projektu...
+
 ## Getting Started
 
 First, run the development server:
