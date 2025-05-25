@@ -3,7 +3,7 @@ import NotFound from "./not-found";
 import Link from "next/link";
 
 export default async function ShowDetails({params}) {
-    const { name } = await params;
+    const { name } =  params;
 
 
     const res =  fetch(`https://api.tvmaze.com/search/shows?q=${name}`)
@@ -20,7 +20,7 @@ export default async function ShowDetails({params}) {
     const data = await Res.json();
     const show = data[0]?.show;
     const { favorites } = await favRes.json();
-    const spremljen = favorites.includes(data.name);
+    const spremljen = favorites.includes(show.name);
 
    return ( 
     <div className="flex justify-center  mt-30">
