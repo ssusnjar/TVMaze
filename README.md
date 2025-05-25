@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 TVMaze je projekt u kojem se prikazuje lista serija, prikazuju detalji o njima, popis svih epizoda po sezonama, popis glumaca i detaljnije o njima.
 U TODO dijelu je ostalo dodatno podijeliti komponente i layout, urediti header ili na naslovnoj neki description o projektu...
+Link na Vercel je u nastavku, ali deploy nije uspješan jer klikom na detalje o seriji javlja grešku na strani servera koju nisam uspjela riješiti.
+https://tv-maze-iiqu.vercel.app/
 
 ## Getting Started
 
