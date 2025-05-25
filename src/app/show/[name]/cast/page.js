@@ -77,6 +77,20 @@ export default function Cast({ params }) {
           </div>
         </div>
       )}
+
+      <aside className='w-60 bg-white shadow-lg p-4'>
+        <h2 className='text-xl font-bold mb-4'>Izbornik</h2>
+          <nav className='space-y-2 mb-4'>
+            <ul className="space-y-4">
+              <li>
+              <a href="/" className="text-blue-500 hover:underline"> Početna</a>
+              </li>
+              <li>
+              <a href={`/show/favorites`} className="text-blue-500 hover:underline">Favoriti</a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
     </div>
   );
 }

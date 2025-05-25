@@ -107,30 +107,30 @@ export default function Episodes({ params }) {
         </div>
       </div>
       {selectedEpisode && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div className="bg-white p-6 rounded-xl w-[90%] max-w-xl shadow-lg relative">
-      <button
-        className="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl"
-        onClick={() => setSelectedEpisode(null)}
-      >
-        ×
-      </button>
-      <h2 className="text-2xl font-bold mb-2">
-        {selectedEpisode.number}. {selectedEpisode.name}
-      </h2>
-      <p className="text-sm text-gray-600 mb-2">Datum: {selectedEpisode.airdate}</p>
-      {selectedEpisode.image?.original && (
-        <img src={selectedEpisode.image.original} alt={selectedEpisode.name} className="mb-4 rounded" />
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-xl w-[90%] max-w-xl shadow-lg relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl"
+              onClick={() => setSelectedEpisode(null)}
+            >
+              ×
+            </button>
+            <h2 className="text-2xl font-bold mb-2">
+              {selectedEpisode.number}. {selectedEpisode.name}
+            </h2>
+            <p className="text-sm text-gray-600 mb-2">Datum: {selectedEpisode.airdate}</p>
+            {selectedEpisode.image?.original && (
+              <img src={selectedEpisode.image.original} alt={selectedEpisode.name} className="mb-4 rounded" />
+            )}
+            {selectedEpisode.summary && (
+              <div
+                className="text-gray-700 text-sm"
+                dangerouslySetInnerHTML={{ __html: selectedEpisode.summary }}
+              />
+            )}
+          </div>
+        </div>
       )}
-      {selectedEpisode.summary && (
-        <div
-          className="text-gray-700 text-sm"
-          dangerouslySetInnerHTML={{ __html: selectedEpisode.summary }}
-        />
-      )}
-    </div>
-  </div>
-)}
     </div>
     
   );
